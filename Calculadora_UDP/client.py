@@ -17,11 +17,9 @@ while 1:
     number2 = input('Input number2: ')
     operator = input('Input operator (+, -, *, /): ')
 
-
     client_socket.sendto(number1.encode(FORMAT), ADDR)
     client_socket.sendto(number2.encode(FORMAT), ADDR)
     client_socket.sendto(operator.encode(FORMAT), ADDR)
-
 
     answer, clientAddress = client_socket.recvfrom(2048)
     answer_decoded = answer.decode(FORMAT)
