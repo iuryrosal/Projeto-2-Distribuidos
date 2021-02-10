@@ -9,7 +9,8 @@ def get_addr_by_broad():
 
     client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-    client.bind(("", 37020))
+    client.bind(("", 0))
+
     while True:
         data, addr = client.recvfrom(1024)
         data = data.decode(FORMAT)

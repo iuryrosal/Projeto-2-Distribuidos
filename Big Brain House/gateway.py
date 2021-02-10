@@ -22,7 +22,7 @@ def scan_broad():
     server_broadcast_socket.settimeout(0.2)
     message = f"{IP} {PORT}".encode(FORMAT)
     for i in range(5):
-        server_broadcast_socket.sendto(message, ('<broadcast>', 37020))
+        server_broadcast_socket.sendto(message, ('<broadcast>', 0))
         print("Message Sent!")
         time.sleep(1)
 
