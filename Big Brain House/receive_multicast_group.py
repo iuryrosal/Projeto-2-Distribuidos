@@ -9,8 +9,6 @@ def receive_multicast():
     # Create the socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    # Bind to the server address
-    sock.bind(server_address)
 
     # Tell the operating system to add the socket to the multicast group
     # on all interfaces.
@@ -19,15 +17,15 @@ def receive_multicast():
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
+    # Bind to the server address
+    sock.bind(server_address)
+
     # Receive/respond loop
     while True:
         print('\nwaiting to receive message')
         data, address = sock.recvfrom(1024)
         
         print('received %s bytes from %s' % (len(data), address))
-        print(data)
 
         if data != None:
-            break
-
-receive_multicast()
+            return address

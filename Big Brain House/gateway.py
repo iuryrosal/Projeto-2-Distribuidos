@@ -2,6 +2,8 @@ import socket
 import time
 import threading
 
+from send_multicast_group import send_multicast 
+
 PORT = 37020
 IP = socket.gethostbyname(socket.gethostname())
 ADDR = (IP, PORT)
@@ -14,17 +16,9 @@ def start_server():
     print("Servidor ligado!")
     return server_tcp_socket
 
-def scan_broad():
-    server_broadcast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-
-    server_broadcast_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-
-    server_broadcast_socket.settimeout(0.2)
-    message = f"{IP} {PORT}".encode(FORMAT)
-    for i in range(5):
-        server_broadcast_socket.sendto(message, ('<broadcast>', 0))
-        print("Message Sent!")
-        time.sleep(1)
+def send_gateway_address():
+    message = "Encontrando aparelhos"
+    send_multicast(message)
 
 def handle(client):
     while True:
@@ -44,5 +38,5 @@ def connect_client_by_tcp(server_tcp_socket):
         thread.start()
 
 server_tcp_socket = start_server()
-scan_broad()
+send_gateway_address()
 connect_client_by_tcp(server_tcp_socket)

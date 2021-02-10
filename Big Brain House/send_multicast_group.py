@@ -26,6 +26,3 @@ def send_multicast(message):
     finally:
         print('closing socket')
         sock.close()
-
-message = 'Oiiiiiiiiiiiiiiiiiiiiiiiiiii'
-send_multicast(message)

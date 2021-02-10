@@ -2,24 +2,13 @@ import socket
 import threading
 import time
 
+from receive_multicast_group import receive_multicast
+
 FORMAT = "utf-8"
 
-def get_addr_by_broad():
-    client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP) # UDP
-
-    client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-
-    client.bind(("", 0))
-
-    while True:
-        data, addr = client.recvfrom(1024)
-        data = data.decode(FORMAT)
-        data = data.split()
-        data[1] = int(data[1])
-        data = tuple(data)
-        if data != None:
-            break
-    return data
+def get_addr_by_mult():
+    addr = receive_multicast()
+    return addr
 
 def receive(client_socket):
     while True:
@@ -52,7 +41,7 @@ def connect_tcp(addr):
 #write_thread = threading.Thread(target = write, args=(client_socket, msg))
 #write_thread.start()
 
-addr = get_addr_by_broad()
+addr = get_addr_by_mult()
 socket = connect_tcp(addr)
 msg = 'Oi'
 write(socket, msg)
