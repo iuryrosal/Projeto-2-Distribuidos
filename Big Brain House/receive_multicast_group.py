@@ -28,4 +28,4 @@ def receive_multicast():
         print('received %s bytes from %s' % (len(data), address))
 
         if data != None:
-            return address
+            return data

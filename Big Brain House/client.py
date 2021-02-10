@@ -7,7 +7,12 @@ from receive_multicast_group import receive_multicast
 FORMAT = "utf-8"
 
 def get_addr_by_mult():
-    addr = receive_multicast()
+    addr = receive_multicast().decode(FORMAT)
+    # Tratando o fortmato da mensagem
+    addr = addr.split()
+    addr[1] = int(addr[1])
+    addr = tuple(addr)
+
     return addr
 
 def receive(client_socket):

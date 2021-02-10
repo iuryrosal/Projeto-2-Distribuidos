@@ -17,7 +17,7 @@ def start_server():
     return server_tcp_socket
 
 def send_gateway_address():
-    message = "Encontrando aparelhos"
+    message = f"{IP} {PORT}"
     send_multicast(message)
 
 def handle(client):
