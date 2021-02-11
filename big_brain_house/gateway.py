@@ -2,7 +2,7 @@ import socket
 import time
 import threading
 
-from send_multicast_group import send_multicast 
+from multicast.send_multicast_group import send_multicast 
 
 PORT = 37020
 IP = socket.gethostbyname(socket.gethostname())

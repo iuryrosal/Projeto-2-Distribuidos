@@ -1,6 +1,8 @@
-import time 
+from client import Client
 
-class Ac:
+import time
+
+class Ac(Client):
   
   def __init__(self, state, temp):
     self.state = False
