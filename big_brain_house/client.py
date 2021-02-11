@@ -37,12 +37,12 @@ class Client:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print(addr)
         client_socket.connect(addr)
-        print("Servidor Conectado!")
+        print("Conectado ao servidor!")
+
+        receive_thread = threading.Thread(target = self.receive, args=(client_socket,))
+        receive_thread.start()
 
         return client_socket
-
-    #receive_thread = threading.Thread(target = receive, args=(client_socket,))
-    #receive_thread.start()
 
     #write_thread = threading.Thread(target = write, args=(client_socket, msg))
     #write_thread.start()

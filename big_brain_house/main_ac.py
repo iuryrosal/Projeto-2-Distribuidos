@@ -1,10 +1,13 @@
-from objects.lamp import Lamp
+from objects.ac import Ac
 
-luzinha = Lamp(False)
-addr = luzinha.get_addr_by_mult()
-socket = luzinha.connect_tcp(addr)
-msg = 'Oi'
-luzinha.write(socket, msg)
-luzinha.receive(socket)
+geladinho = Ac(False, 18)
+addr = geladinho.get_addr_by_mult()
+
+socket = geladinho.connect_tcp(addr)
+msg = f'{geladinho.type}'
+
+geladinho.write(socket, msg)
+geladinho.receive(socket)
+
 
 

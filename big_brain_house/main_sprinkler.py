@@ -1,10 +1,12 @@
-from objects.lamp import Lamp
+from objects.sprinkler import Sprinkler
 
-luzinha = Lamp(False)
-addr = luzinha.get_addr_by_mult()
-socket = luzinha.connect_tcp(addr)
-msg = 'Oi'
-luzinha.write(socket, msg)
-luzinha.receive(socket)
+molhadinho = Sprinkler(False)
+addr = molhadinho.get_addr_by_mult()
+
+socket = molhadinho.connect_tcp(addr)
+msg = f'{molhadinho.type}'
+
+molhadinho.write(socket, msg)
+molhadinho.receive(socket)
 
 
