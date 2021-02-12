@@ -1,6 +1,7 @@
 import socket
 import time
 import threading
+import generated.messages_pb2 as messages_pb2
 
 from multicast.send_multicast_group import send_multicast 
 
@@ -12,7 +13,6 @@ clients_types = []
 clients = []
 
 application_address = None
-
 
 def start_server():
     server_tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,33 +29,36 @@ def handle(client):
     while True:
         message = client.recv(1024)
         message_decoded = message.decode(FORMAT)
-        print(message_decoded)
+
         answer = 'Retorno do gateway: Você esta conectado via TCP\n'
         client.send(answer.encode(FORMAT))
 
 def application_handle(client):
-    print("Conectado a applicação via TCP\n")
-
     while True:
+        print("Recebendo mensagens")
         message = client.recv(1024)
-        message_decoded = message.decode(FORMAT)
+
+        message_decoded = messages_pb2.IdentificatioApplication()
+        message_decoded.ParseFromString(message)
         print(message_decoded)
         answer = 'Retorno do gateway: Você esta conectado via TCP\n'
         client.send(answer.encode(FORMAT))
 
-
 def connect_client_by_tcp(server_tcp_socket):
     print("Aguardando conexões TCP...\n")
-    
+    addr_app = ('127.0.1.1', 5555)
+
     while True:
         client, address = server_tcp_socket.accept()
-        client_type = client.recv(1024).decode(FORMAT)
 
-        if client_type != 'Application':
+        if address == addr_app:
+            application_thread = threading.Thread(target=application_handle, args=(client,))
+            application_thread.start()
+        else:
+            client_type = client.recv(1024).decode(FORMAT)
             clients_types.append(client_type)
             clients.append(client)
-            print(f"Clientes conectados:{clients},\n Tipos:{clients_types}\n\n")
-            
+         
             print("Connected with {}\n".format(str(address)))
 
             thread = threading.Thread(target=handle, args=(client,))
@@ -65,17 +68,13 @@ def connect_client_by_tcp(server_tcp_socket):
             time.sleep(2)
             msg = "status True"
             send_command(0,msg)
-        else:
-            application_address = client
-            application_thread = threading.Thread(target=application_handle, args=(client,))
-            application_thread.start()
+            
 
 
 def send_command(client_index, message):
     clients[client_index].send(message.encode(FORMAT))
 
  
-
 server_tcp_socket = start_server()
 send_gateway_address()
 connect_client_by_tcp(server_tcp_socket)
