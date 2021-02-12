@@ -22,10 +22,10 @@ def receive_multicast():
 
     # Receive/respond loop
     while True:
-        print('\nwaiting to receive message')
+        print('\nwaiting to receive message by multicast\n')
         data, address = sock.recvfrom(1024)
         
-        print('received %s bytes from %s' % (len(data), address))
+        print('received %s bytes from %s\n' % (len(data), address))
 
         if data != None:
             return data

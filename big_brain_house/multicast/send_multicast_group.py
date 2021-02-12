@@ -19,10 +19,10 @@ def send_multicast(message):
 
     try:
         # Send data to the multicast group
-        print('sending "%s"' %message)
+        print('Sending by multicast "%s"\n' %message)
         message = message.encode('UTF-8')
         sock.sendto(message, multicast_group)
 
     finally:
-        print('closing socket')
+        print('Closing multcast socket\n')
         sock.close()
