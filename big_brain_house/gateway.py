@@ -74,24 +74,34 @@ def set_object_status(client, args):
         if clients_types[i] == iobject:
             send_command_to_object(i , f"status {new_status}")
 
+def set_object_attributes(client, args):
+    iobject, changed_attribute, new_value = args.split()[0], args.split()[1], args.split()[2]
+
+    for i in range(0, len(clients_types)):
+        if clients_types[i] == iobject:
+            send_command_to_object(i , f"{changed_attribute} {new_value}")
+
 def application_handle(client):
     while True:
         try:
             print("Esperando mensagens da apliação")
             message = client.recv(1024)
-            print(message, '\n')
             message_decoded = messages_pb2.ApplicationMessage()
             message_decoded.ParseFromString(message)
             
             if message_decoded.type == 1:
                 if message_decoded.command == 'list_objects':
                     return_list_object(client)
-                if message_decoded.command == 'get_status':
+                elif message_decoded.command == 'get_status':
                     return_object_status(client, message_decoded.args)
-                if message_decoded.command == 'set_status':
+                elif message_decoded.command == 'set_status':
                     set_object_status(client, message_decoded.args)
-        except:
-            print("An error occured!")
+                elif message_decoded.command == 'set_attributes':
+                    set_object_attributes(client, message_decoded.args)
+                else:
+                    pass
+        except Exception as e:
+            print(e)
             client.close()
             break
                     

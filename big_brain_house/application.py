@@ -61,6 +61,18 @@ def set_status_object(client_socket, args):
     write(client_socket, serialized_message)
     print("### Mensagem enviada")
 
+def set_attribute_object(client_socket, args):
+    command_message = messages_pb2.ApplicationMessage()
+    command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
+    command_message.command = "set_attributes"
+    command_message.args = args
+
+    print("### Serializando Mensagem")
+    serialized_message = command_message.SerializeToString()
+
+    write(client_socket, serialized_message)
+    print("### Mensagem enviada")
+
 # conecta via tcp com o servidor
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.bind(ADDR_APP)
@@ -75,4 +87,5 @@ print("### Escutando respostas do servidor")
 # commands:
 # request_list_objects(client_socket)
 # request_status_object(client_socket, 'Lamp')
-set_status_object(client_socket, 'AC true')
+# set_status_object(client_socket, 'AC true')
+set_attribute_object(client_socket, 'AC temp 37')
