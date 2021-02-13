@@ -14,15 +14,17 @@ message ApplicationMessage {
 }
 
 message Object {
-  string type = 1;
-  bool status = 2;
-  int32 temp = 3;
+  string address = 1;
+  string type = 2;
+  bool status = 3;
+  int32 temp = 4;
 }
 
 message GatewayMessage {
   enum MessageType {
       UPDATE = 0;
-      LIST = 1;
+      GET = 1;
+      LIST = 2;
   }
 
   MessageType response_type = 1;

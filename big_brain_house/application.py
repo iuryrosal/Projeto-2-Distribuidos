@@ -26,13 +26,37 @@ def write(client_socket, message):
     print("### Enviando mensagem")
     client_socket.send(message)
 
-def list_objects(client_socket):
-    identification_message = messages_pb2.ApplicationMessage()
-    identification_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
-    identification_message.command = "list_objects"
+def request_list_objects(client_socket):
+    command_message = messages_pb2.ApplicationMessage()
+    command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
+    command_message.command = "list_objects"
 
     print("### Serializando Mensagem")
-    serialized_message = identification_message.SerializeToString()
+    serialized_message = command_message.SerializeToString()
+
+    write(client_socket, serialized_message)
+    print("### Mensagem enviada")
+
+def request_status_object(client_socket, consulted_object):
+    command_message = messages_pb2.ApplicationMessage()
+    command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
+    command_message.command = "get_status"
+    command_message.args = consulted_object
+
+    print("### Serializando Mensagem")
+    serialized_message = command_message.SerializeToString()
+
+    write(client_socket, serialized_message)
+    print("### Mensagem enviada")
+
+def set_status_object(client_socket, args):
+    command_message = messages_pb2.ApplicationMessage()
+    command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
+    command_message.command = "set_status"
+    command_message.args = args
+
+    print("### Serializando Mensagem")
+    serialized_message = command_message.SerializeToString()
 
     write(client_socket, serialized_message)
     print("### Mensagem enviada")
@@ -48,4 +72,6 @@ receive_thread = threading.Thread(target=receive, args=(client_socket,  ))
 receive_thread.start()
 print("### Escutando respostas do servidor")
 
-list_objects(client_socket)
+# request_list_objects(client_socket)
+# request_status_object(client_socket, 'Lamp')
+set_status_object(client_socket, 'Lamp true')
