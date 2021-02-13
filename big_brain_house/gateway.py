@@ -11,12 +11,9 @@ ADDR = (IP, PORT)
 FORMAT = "utf-8"
 
 ADDR_APP = ('127.0.1.1', 5555)
+socket_app = []
 
-
-
-
-
-clients_types = [] 
+clients_types = []
 clients = []
 ac_info = 0
 
@@ -35,6 +32,9 @@ def send_command_to_object(client_index, message):
     clients[client_index].send(message.encode(FORMAT))
 
 def handle(client):
+    answer = messages_pb2.GatewayMessage()
+    answer.response_type = messages_pb2.GatewayMessage.MessageType.GET
+    
     while True:
         try:
             message = client.recv(1024)
@@ -43,11 +43,23 @@ def handle(client):
             if message_decoded.split()[0] == 'acinfo':
                 ac_info = message_decoded
                 print(ac_info)
+            elif message_decoded.split()[0] == 'lampinfo':
+                lamp_info = message_decoded
+                print(lamp_info)
+
+                iobject = answer.object.add()
+                iobject.type = message_decoded.split()[0]
+                iobject.status = bool(lamp_info.split()[1])
+
+                answer_serialized = answer.SerializeToString()
+                socket_app[0].send(answer_serialized)
+
             else:
                 answer = 'Retorno do gateway: Você esta conectado via TCP\n'
                 client.send(answer.encode(FORMAT))
-        except:
-            print("An error occured!")
+
+        except Exception as e:
+            print(e)
             client.close()
             break
 
@@ -63,20 +75,12 @@ def return_list_object(client):
 
     client.send(answer_serialized)
 
-def return_object_status(client, consulted_object):
-    answer = messages_pb2.GatewayMessage()
-    answer.response_type = messages_pb2.GatewayMessage.MessageType.GET
+def request_object_status(client, consulted_object):
 
-    for o in clients_types:
-        if o == consulted_object:
-            iobject = answer.object.add()
-            iobject.type = o 
-            if consulted_object == "AC":
-                iobject.temp = ac_info.split()[1]
-                iobject.status = ac_info.split()[2]
-
-            answer_serialized = answer.SerializeToString()
-            client.send(answer_serialized)
+    iobject = consulted_object
+    for i in range(0, len(clients_types)):
+        if clients_types[i] == iobject:
+            send_command_to_object(i , f"get_status")
 
 def set_object_status(client, args):
     iobject, new_status = args.split()[0], args.split()[1]
@@ -104,7 +108,7 @@ def application_handle(client):
                 if message_decoded.command == 'list_objects':
                     return_list_object(client)
                 elif message_decoded.command == 'get_status':
-                    return_object_status(client, message_decoded.args)
+                    request_object_status(client, message_decoded.args)
                 elif message_decoded.command == 'set_status':
                     set_object_status(client, message_decoded.args)
                 elif message_decoded.command == 'set_attributes':
@@ -125,11 +129,14 @@ def connect_client_by_tcp(server_tcp_socket):
 
             # encaminhamento para a thread que irá lidar com as requisições da applicação ou para a thread dos objetos
             if address == ADDR_APP: 
+                socket_app.append(client)
+                print(socket_app[0])
                 application_thread = threading.Thread(target=application_handle, args=(client,))
                 application_thread.start()
             else:
                 # registra os clientes antes de iniciar a thread
                 client_type = client.recv(1024).decode(FORMAT)
+                
                 clients_types.append(client_type)
                 clients.append(client)
             

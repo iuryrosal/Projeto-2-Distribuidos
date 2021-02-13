@@ -14,13 +14,16 @@ ADDR_APP = (IP_APP, PORT_APP)
 
 def receive(client_socket):
     while True:
-      try:
-          message = client_socket.recv(1024).decode(FORMAT)
-          print(message)
-      except:
-          print("An error occured!")
-          client_socket.close()
-          break
+        try:
+            message = client_socket.recv(1024)
+            message_decoded = messages_pb2.GatewayMessage()
+            message_decoded.ParseFromString(message)
+
+            print(message_decoded)
+        except Exception as e:
+            print(e)
+            client.close()
+            break
 
 def write(client_socket, message):
     print("### Enviando mensagem")
@@ -88,4 +91,5 @@ print("### Escutando respostas do servidor")
 # request_list_objects(client_socket)
 # request_status_object(client_socket, 'Lamp')
 # set_status_object(client_socket, 'AC true')
-set_attribute_object(client_socket, 'AC temp 37')
+# set_attribute_object(client_socket, 'AC temp 37')
+request_status_object(client_socket, 'Lamp')
