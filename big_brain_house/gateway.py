@@ -12,9 +12,13 @@ FORMAT = "utf-8"
 
 ADDR_APP = ('127.0.1.1', 5555)
 
+
+
+
+
 clients_types = [] 
 clients = []
-
+ac_info = 0
 
 def start_server():
     server_tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,8 +40,12 @@ def handle(client):
             message = client.recv(1024)
             message_decoded = message.decode(FORMAT)
 
-            answer = 'Retorno do gateway: Você esta conectado via TCP\n'
-            client.send(answer.encode(FORMAT))
+            if message_decoded.split()[0] == 'acinfo':
+                ac_info = message_decoded
+                print(ac_info)
+            else:
+                answer = 'Retorno do gateway: Você esta conectado via TCP\n'
+                client.send(answer.encode(FORMAT))
         except:
             print("An error occured!")
             client.close()
@@ -63,6 +71,9 @@ def return_object_status(client, consulted_object):
         if o == consulted_object:
             iobject = answer.object.add()
             iobject.type = o 
+            if consulted_object == "AC":
+                iobject.temp = ac_info.split()[1]
+                iobject.status = ac_info.split()[2]
 
             answer_serialized = answer.SerializeToString()
             client.send(answer_serialized)
@@ -72,14 +83,14 @@ def set_object_status(client, args):
 
     for i in range(0, len(clients_types)):
         if clients_types[i] == iobject:
-            send_command_to_object(i , f"status {new_status}")
+            send_command_to_object(i , f"set_status {new_status}")
 
 def set_object_attributes(client, args):
     iobject, changed_attribute, new_value = args.split()[0], args.split()[1], args.split()[2]
 
     for i in range(0, len(clients_types)):
         if clients_types[i] == iobject:
-            send_command_to_object(i , f"{changed_attribute} {new_value}")
+            send_command_to_object(i , f"set_{changed_attribute} {new_value}")
 
 def application_handle(client):
     while True:
