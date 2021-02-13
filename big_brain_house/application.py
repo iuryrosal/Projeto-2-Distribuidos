@@ -24,8 +24,18 @@ def receive(client_socket):
 
 def write(client_socket, message):
     print("### Enviando mensagem")
-    time.sleep(2)
     client_socket.send(message)
+
+def list_objects(client_socket):
+    identification_message = messages_pb2.ApplicationMessage()
+    identification_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
+    identification_message.command = "list_objects"
+
+    print("### Serializando Mensagem")
+    serialized_message = identification_message.SerializeToString()
+
+    write(client_socket, serialized_message)
+    print("### Mensagem enviada")
 
 # conecta via tcp com o servidor
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -33,25 +43,9 @@ client_socket.bind(ADDR_APP)
 client_socket.connect(GATEWAY_ADDR)
 print("### conectado com o servidor")
 
-# cria e serializa a mensagem a ser enviada
-identification_message = messages_pb2.IdentificatioApplication()
-identification_message.type = 'Application'
-serialized_message = identification_message.SerializeToString()
-print("### Serializando Mensagem")
-
-# envio da mensagem
-write(client_socket, serialized_message)
-print("### Mensagem enviada")
-
 # início da thread para fica escutando o server
 receive_thread = threading.Thread(target=receive, args=(client_socket,  ))
 receive_thread.start()
+print("### Escutando respostas do servidor")
 
-
-
-
-# write_thread = threading.Thread(target=write, args=(client_socket))
-# write_thread.start()
-
-
-# listar aparelhos disponiveis, ligar atributos dos aparelhos espeficos
+list_objects(client_socket)

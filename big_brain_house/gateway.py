@@ -5,10 +5,11 @@ import generated.messages_pb2 as messages_pb2
 
 from multicast.send_multicast_group import send_multicast 
 
-PORT = 37020
 IP = socket.gethostbyname(socket.gethostname())
+PORT = 37020
 ADDR = (IP, PORT)
 FORMAT = "utf-8"
+
 clients_types = [] 
 clients = []
 
@@ -35,14 +36,23 @@ def handle(client):
 
 def application_handle(client):
     while True:
-        print("Recebendo mensagens")
+        print("Recebendo mensagens da apliação")
         message = client.recv(1024)
-
-        message_decoded = messages_pb2.IdentificatioApplication()
+        message_decoded = messages_pb2.ApplicationMessage()
         message_decoded.ParseFromString(message)
-        print(message_decoded)
-        answer = 'Retorno do gateway: Você esta conectado via TCP\n'
-        client.send(answer.encode(FORMAT))
+        
+        if message_decoded.type == 1:
+            if message_decoded.command == 'list_objects':
+                answer = messages_pb2.GatewayMessage()
+                answer.response_type = messages_pb2.GatewayMessage.MessageType.LIST
+                
+                for o in clients_types:
+                    iobject = answer.object.add()
+                    iobject.type = o
+
+                answer_serialized = answer.SerializeToString()
+
+                client.send(answer_serialized)
 
 def connect_client_by_tcp(server_tcp_socket):
     print("Aguardando conexões TCP...\n")
@@ -51,7 +61,8 @@ def connect_client_by_tcp(server_tcp_socket):
     while True:
         client, address = server_tcp_socket.accept()
 
-        if address == addr_app:
+        # encaminhamento para a thread que irá lidar com as requisições da applicação ou para a thread dos objetos
+        if address == addr_app: 
             application_thread = threading.Thread(target=application_handle, args=(client,))
             application_thread.start()
         else:
@@ -64,26 +75,9 @@ def connect_client_by_tcp(server_tcp_socket):
             thread = threading.Thread(target=handle, args=(client,))
             thread.start()
 
-            # teste para mudança de status dos objetos
-            time.sleep(2)
-            msg = "status True"
-            send_command(0,msg)
-            
-
-
 def send_command(client_index, message):
     clients[client_index].send(message.encode(FORMAT))
 
- 
 server_tcp_socket = start_server()
 send_gateway_address()
 connect_client_by_tcp(server_tcp_socket)
-
-
-
-
-
-
-
-
-

@@ -8,6 +8,3 @@ msg = f'{geladinho.type}'
 
 geladinho.write(socket, msg)
 geladinho.receive(socket)
-
-
-

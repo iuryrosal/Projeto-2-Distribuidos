@@ -27,11 +27,7 @@ class Client:
                 break
 
     def write(self, client_socket, msg):
-        #while True:
-        text = msg + '\n'
-        client_socket.send(text.encode(Client.FORMAT))
-        time.sleep(2)
-
+        client_socket.send(msg.encode(Client.FORMAT))
 
     def connect_tcp(self, addr):
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
