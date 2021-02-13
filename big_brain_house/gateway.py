@@ -77,8 +77,9 @@ def set_object_status(client, args):
 def application_handle(client):
     while True:
         try:
-            print("Recebendo mensagens da apliação")
+            print("Esperando mensagens da apliação")
             message = client.recv(1024)
+            print(message, '\n')
             message_decoded = messages_pb2.ApplicationMessage()
             message_decoded.ParseFromString(message)
             
@@ -91,7 +92,7 @@ def application_handle(client):
                     set_object_status(client, message_decoded.args)
         except:
             print("An error occured!")
-            client_socket.close()
+            client.close()
             break
                     
 def connect_client_by_tcp(server_tcp_socket):

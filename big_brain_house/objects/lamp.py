@@ -10,7 +10,7 @@ class Lamp(Client):
     while True:
         try:
             message = client_socket.recv(1024).decode(Client.FORMAT)
-            print(message)
+            print(f"Comando recebido: {message}")
             if message.split()[0] == "status":
                 if message.split()[1] == "true":
                     self.state = True

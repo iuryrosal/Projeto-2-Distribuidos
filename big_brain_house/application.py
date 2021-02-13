@@ -72,6 +72,7 @@ receive_thread = threading.Thread(target=receive, args=(client_socket,  ))
 receive_thread.start()
 print("### Escutando respostas do servidor")
 
+# commands:
 # request_list_objects(client_socket)
 # request_status_object(client_socket, 'Lamp')
-set_status_object(client_socket, 'Lamp true')
+set_status_object(client_socket, 'AC true')
