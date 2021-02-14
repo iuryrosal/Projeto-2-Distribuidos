@@ -31,29 +31,29 @@ def send_gateway_address():
 def send_command_to_object(client_index, message):
     clients[client_index].send(message.encode(FORMAT))
 
-def handle(client):
-    answer = messages_pb2.GatewayMessage()
-    answer.response_type = messages_pb2.GatewayMessage.MessageType.GET
-    
+def handle(client):    
     while True:
         try:
+            answer = messages_pb2.GatewayMessage()
+            answer.response_type = messages_pb2.GatewayMessage.MessageType.GET
+            
             message = client.recv(1024)
             message_decoded = message.decode(FORMAT)
 
             if message_decoded.split()[0] == 'acinfo':
                 ac_info = message_decoded
                 print(ac_info)
-            elif message_decoded.split()[0] == 'lampinfo':
-                lamp_info = message_decoded
-                print(lamp_info)
+            elif message_decoded.split()[0] == 'lampinfo' or message_decoded.split()[0] == 'sprinklerinfo':
+                info = message_decoded
+                print(info)
 
                 iobject = answer.object.add()
                 iobject.type = message_decoded.split()[0]
-                iobject.status = bool(lamp_info.split()[1])
+                iobject.status = info.split()[1]
 
                 answer_serialized = answer.SerializeToString()
                 socket_app[0].send(answer_serialized)
-
+       
             else:
                 answer = 'Retorno do gateway: Você esta conectado via TCP\n'
                 client.send(answer.encode(FORMAT))
@@ -130,7 +130,6 @@ def connect_client_by_tcp(server_tcp_socket):
             # encaminhamento para a thread que irá lidar com as requisições da applicação ou para a thread dos objetos
             if address == ADDR_APP: 
                 socket_app.append(client)
-                print(socket_app[0])
                 application_thread = threading.Thread(target=application_handle, args=(client,))
                 application_thread.start()
             else:

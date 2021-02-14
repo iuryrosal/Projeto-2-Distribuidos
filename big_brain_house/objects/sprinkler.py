@@ -18,7 +18,13 @@ class Sprinkler(Client):
                     self.state = False
                 else:
                     pass
-            print(f"Novo status:{self.state}")
+                print(f"Novo status:{self.state}")
+
+            elif message.split()[0] == "get_status":
+                msg = f"sprinklerinfo {self.state}"
+                self.write(client_socket, msg)
+            else:
+                pass
         except:
             print("An error occured!")
             client_socket.close()

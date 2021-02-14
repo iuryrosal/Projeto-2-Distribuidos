@@ -40,6 +40,8 @@ def request_list_objects(client_socket):
     write(client_socket, serialized_message)
     print("### Mensagem enviada")
 
+    return None
+
 def request_status_object(client_socket, consulted_object):
     command_message = messages_pb2.ApplicationMessage()
     command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
@@ -51,6 +53,8 @@ def request_status_object(client_socket, consulted_object):
 
     write(client_socket, serialized_message)
     print("### Mensagem enviada")
+
+    return None
 
 def set_status_object(client_socket, args):
     command_message = messages_pb2.ApplicationMessage()
@@ -64,6 +68,8 @@ def set_status_object(client_socket, args):
     write(client_socket, serialized_message)
     print("### Mensagem enviada")
 
+    return None
+
 def set_attribute_object(client_socket, args):
     command_message = messages_pb2.ApplicationMessage()
     command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
@@ -76,6 +82,28 @@ def set_attribute_object(client_socket, args):
     write(client_socket, serialized_message)
     print("### Mensagem enviada")
 
+    return None
+
+def main(client_socket):
+    while True: 
+        time.sleep(1)
+        command = input('\nDigite o comando:')
+        command_split = command.split()
+        try:
+            if command_split[0] == 'request_list':
+                request_list_objects(client_socket)
+            elif command_split[0] == 'request_status':
+                request_status_object(client_socket, command_split[1])
+            elif command_split[0] == 'set_status':
+                set_status_object(client_socket,f"{command_split[1]} {command_split[2]}")
+            elif command_split[0] == 'set_attribute':
+                set_attribute_object(client_socket,f"{command_split[1]} {command_split[2]} {command_split[3]}")
+            else:
+                print('Comando invalido')
+        except:
+            print('Comando invalido')
+            
+
 # conecta via tcp com o servidor
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.bind(ADDR_APP)
@@ -87,9 +115,11 @@ receive_thread = threading.Thread(target=receive, args=(client_socket,  ))
 receive_thread.start()
 print("### Escutando respostas do servidor")
 
+main(client_socket)
+
 # commands:
 # request_list_objects(client_socket)
 # request_status_object(client_socket, 'Lamp')
 # set_status_object(client_socket, 'AC true')
 # set_attribute_object(client_socket, 'AC temp 37')
-request_status_object(client_socket, 'Lamp')
+# request_status_object(client_socket, 'Sprinkler')

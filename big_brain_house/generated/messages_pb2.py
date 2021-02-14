@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x18generated/messages.proto\"\x92\x01\n\x12\x41pplicationMessage\x12-\n\x04type\x18\x01 \x01(\x0e\x32\x1f.ApplicationMessage.MessageType\x12\x0f\n\x07\x63ommand\x18\x02 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x03 \x01(\t\".\n\x0bMessageType\x12\x12\n\x0eIDENTIFICATION\x10\x00\x12\x0b\n\x07\x43OMMAND\x10\x01\"E\n\x06Object\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x0e\n\x06status\x18\x03 \x01(\x08\x12\x0c\n\x04temp\x18\x04 \x01(\x05\"\x8b\x01\n\x0eGatewayMessage\x12\x32\n\rresponse_type\x18\x01 \x01(\x0e\x32\x1b.GatewayMessage.MessageType\x12\x17\n\x06object\x18\x02 \x03(\x0b\x32\x07.Object\",\n\x0bMessageType\x12\n\n\x06UPDATE\x10\x00\x12\x07\n\x03GET\x10\x01\x12\x08\n\x04LIST\x10\x02\x62\x06proto3'
+  serialized_pb=b'\n\x18generated/messages.proto\"\x92\x01\n\x12\x41pplicationMessage\x12-\n\x04type\x18\x01 \x01(\x0e\x32\x1f.ApplicationMessage.MessageType\x12\x0f\n\x07\x63ommand\x18\x02 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x03 \x01(\t\".\n\x0bMessageType\x12\x12\n\x0eIDENTIFICATION\x10\x00\x12\x0b\n\x07\x43OMMAND\x10\x01\"E\n\x06Object\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x0e\n\x06status\x18\x03 \x01(\t\x12\x0c\n\x04temp\x18\x04 \x01(\x05\"\x8b\x01\n\x0eGatewayMessage\x12\x32\n\rresponse_type\x18\x01 \x01(\x0e\x32\x1b.GatewayMessage.MessageType\x12\x17\n\x06object\x18\x02 \x03(\x0b\x32\x07.Object\",\n\x0bMessageType\x12\n\n\x06UPDATE\x10\x00\x12\x07\n\x03GET\x10\x01\x12\x08\n\x04LIST\x10\x02\x62\x06proto3'
 )
 
 
@@ -151,8 +151,8 @@ _OBJECT = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='status', full_name='Object.status', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),

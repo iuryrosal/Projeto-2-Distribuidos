@@ -16,7 +16,7 @@ message ApplicationMessage {
 message Object {
   string address = 1;
   string type = 2;
-  bool status = 3;
+  string status = 3;
   int32 temp = 4;
 }
 
