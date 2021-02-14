@@ -15,7 +15,7 @@ socket_app = []
 
 clients_types = []
 clients = []
-ac_info = 0
+ac_info = ''
 
 def start_server():
     server_tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,13 +36,15 @@ def handle(client):
         try:
             answer = messages_pb2.GatewayMessage()
             answer.response_type = messages_pb2.GatewayMessage.MessageType.GET
-            
+
             message = client.recv(1024)
             message_decoded = message.decode(FORMAT)
 
             if message_decoded.split()[0] == 'acinfo':
-                ac_info = message_decoded
+                global ac_info 
+                ac_info = f"AC {message_decoded.split()[1]} {message_decoded.split()[2]}"
                 print(ac_info)
+
             elif message_decoded.split()[0] == 'lampinfo' or message_decoded.split()[0] == 'sprinklerinfo':
                 info = message_decoded
                 print(info)
@@ -63,6 +65,21 @@ def handle(client):
             client.close()
             break
 
+def return_sensors(clien, request_object):
+    answer = messages_pb2.GatewayMessage()
+    answer.response_type = messages_pb2.GatewayMessage.MessageType.GET
+
+    if request_object == "AC":
+        info = ac_info
+
+    iobject = answer.object.add()
+    iobject.type = info.split()[0]
+    iobject.temp = int(info.split()[1])
+    iobject.status = info.split()[2]
+
+    answer_serialized = answer.SerializeToString()
+    socket_app[0].send(answer_serialized)
+
 def return_list_object(client):
     answer = messages_pb2.GatewayMessage()
     answer.response_type = messages_pb2.GatewayMessage.MessageType.LIST
@@ -80,7 +97,10 @@ def request_object_status(client, consulted_object):
     iobject = consulted_object
     for i in range(0, len(clients_types)):
         if clients_types[i] == iobject:
-            send_command_to_object(i , f"get_status")
+            if iobject == "AC":
+                return_sensors(client, iobject)
+            else:
+                send_command_to_object(i , f"get_status")
 
 def set_object_status(client, args):
     iobject, new_status = args.split()[0], args.split()[1]

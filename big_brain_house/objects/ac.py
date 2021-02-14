@@ -41,7 +41,7 @@ class Ac(Client):
 
                 elif message.split()[0] == "set_temp":
                     self.temp = int(message.split()[1])
-                    print(f"Nova temperatura:{self.state}")
+                    print(f"Nova temperatura:{self.temp}")
                 else:
                     pass
           except:
