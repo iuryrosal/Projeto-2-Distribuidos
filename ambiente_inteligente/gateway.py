@@ -100,7 +100,7 @@ def request_object_status(client, consulted_object):
             if iobject == "AC":
                 return_sensors(client, iobject)
             else:
-                send_command_to_object(i , f"get_status")
+                send_command_to_object(i , f"request_status")
 
 def set_object_status(client, args):
     iobject, new_status = args.split()[0], args.split()[1]
@@ -127,7 +127,7 @@ def application_handle(client):
             if message_decoded.type == 1:
                 if message_decoded.command == 'list_objects':
                     return_list_object(client)
-                elif message_decoded.command == 'get_status':
+                elif message_decoded.command == 'request_status':
                     request_object_status(client, message_decoded.args)
                 elif message_decoded.command == 'set_status':
                     set_object_status(client, message_decoded.args)

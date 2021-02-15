@@ -42,10 +42,10 @@ def request_list_objects(client_socket):
 
     return None
 
-def request_status_object(client_socket, consulted_object):
+def request_object_status(client_socket, consulted_object):
     command_message = messages_pb2.ApplicationMessage()
     command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
-    command_message.command = "get_status"
+    command_message.command = "request_status"
     command_message.args = consulted_object
 
     print("### Serializing Message")
@@ -56,7 +56,7 @@ def request_status_object(client_socket, consulted_object):
 
     return None
 
-def set_status_object(client_socket, args):
+def set_object_status(client_socket, args):
     command_message = messages_pb2.ApplicationMessage()
     command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
     command_message.command = "set_status"
@@ -70,7 +70,7 @@ def set_status_object(client_socket, args):
 
     return None
 
-def set_attribute_object(client_socket, args):
+def set_object_attributes(client_socket, args):
     command_message = messages_pb2.ApplicationMessage()
     command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
     command_message.command = "set_attributes"
@@ -93,16 +93,15 @@ def main(client_socket):
             if command_split[0] == 'request_list':
                 request_list_objects(client_socket)
             elif command_split[0] == 'request_status':
-                request_status_object(client_socket, command_split[1])
+                request_object_status(client_socket, command_split[1])
             elif command_split[0] == 'set_status':
-                set_status_object(client_socket,f"{command_split[1]} {command_split[2]}")
+                set_object_status(client_socket,f"{command_split[1]} {command_split[2]}")
             elif command_split[0] == 'set_attribute':
-                set_attribute_object(client_socket,f"{command_split[1]} {command_split[2]} {command_split[3]}")
+                set_object_attributes(client_socket,f"{command_split[1]} {command_split[2]} {command_split[3]}")
             else:
                 print('Invalid Command!')
         except:
             print('Invalid Command!')
-            
 
 # conecta via tcp com o servidor
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -119,7 +118,7 @@ main(client_socket)
 
 # commands:
 # request_list_objects(client_socket)
-# request_status_object(client_socket, 'Lamp')
-# set_status_object(client_socket, 'AC true')
-# set_attribute_object(client_socket, 'AC temp 37')
-# request_status_object(client_socket, 'Sprinkler')
+# request_object_status(client_socket, 'Lamp')
+# set_object_status(client_socket, 'AC true')
+# set_object_attributes(client_socket, 'AC temp 37')
+# request_object_status(client_socket, 'Sprinkler')

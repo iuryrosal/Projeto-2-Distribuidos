@@ -20,7 +20,7 @@ class Sprinkler(Client):
                         pass
                     print(f"New status:{self.state}")
 
-                elif message.split()[0] == "get_status":
+                elif message.split()[0] == "request_status":
                     msg = f"sprinklerinfo {self.state}"
                     self.write(client_socket, msg)
                 else:
