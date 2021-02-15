@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-
-
 message ApplicationMessage {
   enum MessageType {
       IDENTIFICATION = 0;
