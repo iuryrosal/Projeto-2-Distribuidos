@@ -39,12 +39,3 @@ class Client:
         receive_thread.start()
 
         return client_socket
-
-    #write_thread = threading.Thread(target = write, args=(client_socket, msg))
-    #write_thread.start()
-
-    # addr = get_addr_by_mult()
-    # socket = connect_tcp(addr)
-    # msg = 'Oi'
-    # write(socket, msg)
-    # receive(socket)

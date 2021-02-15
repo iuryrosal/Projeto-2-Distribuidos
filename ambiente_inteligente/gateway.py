@@ -57,7 +57,7 @@ def handle(client):
                 socket_app[0].send(answer_serialized)
 
             else:
-                answer = 'Retorno do gateway: Você esta conectado via TCP\n'
+                answer = 'Return of gateway: You are connected by TCP\n'
                 client.send(answer.encode(FORMAT))
 
         except Exception as e:
