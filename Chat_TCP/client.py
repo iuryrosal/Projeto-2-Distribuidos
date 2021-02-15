@@ -14,8 +14,6 @@ def receive(client_socket, nickname):
             elif message == 'Disconnected!!':
                 print(message)
                 connected = 0
-                write_thread.join()
-                receive_thread.join()
                 client_socket.close()
                 break
             else:
