@@ -33,7 +33,7 @@ class Client:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print(addr)
         client_socket.connect(addr)
-        print("Conectado ao servidor!")
+        print("Connected to Gateway!")
 
         receive_thread = threading.Thread(target = self.receive, args=(client_socket,))
         receive_thread.start()

@@ -21,7 +21,7 @@ def start_server():
     server_tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_tcp_socket.bind(ADDR)
     server_tcp_socket.listen()
-    print("Servidor ligado!\n")
+    print("Gateway On!\n")
     return server_tcp_socket
 
 def send_gateway_address():
@@ -48,14 +48,14 @@ def handle(client):
             elif message_decoded.split()[0] == 'lampinfo' or message_decoded.split()[0] == 'sprinklerinfo':
                 info = message_decoded
                 print(info)
-
+                
                 iobject = answer.object.add()
                 iobject.type = message_decoded.split()[0]
                 iobject.status = info.split()[1]
 
                 answer_serialized = answer.SerializeToString()
                 socket_app[0].send(answer_serialized)
-       
+
             else:
                 answer = 'Retorno do gateway: Você esta conectado via TCP\n'
                 client.send(answer.encode(FORMAT))
@@ -119,7 +119,7 @@ def set_object_attributes(client, args):
 def application_handle(client):
     while True:
         try:
-            print("Esperando mensagens da apliação")
+            print("Waiting application's messages")
             message = client.recv(1024)
             message_decoded = messages_pb2.ApplicationMessage()
             message_decoded.ParseFromString(message)
@@ -141,7 +141,7 @@ def application_handle(client):
             break
                     
 def connect_client_by_tcp(server_tcp_socket):
-    print("Aguardando conexões TCP...\n")
+    print("Waiting TCP's connections...\n")
     
     while True:
         try:
@@ -159,7 +159,7 @@ def connect_client_by_tcp(server_tcp_socket):
                 clients_types.append(client_type)
                 clients.append(client)
             
-                print("Connected with {}\n".format(str(address)))
+                print("Connected to {}\n".format(str(address)))
 
                 thread = threading.Thread(target=handle, args=(client,))
                 thread.start()

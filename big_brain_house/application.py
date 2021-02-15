@@ -26,7 +26,7 @@ def receive(client_socket):
             break
 
 def write(client_socket, message):
-    print("### Enviando mensagem")
+    print("### Sending message")
     client_socket.send(message)
 
 def request_list_objects(client_socket):
@@ -34,11 +34,11 @@ def request_list_objects(client_socket):
     command_message.type = messages_pb2.ApplicationMessage.MessageType.COMMAND
     command_message.command = "list_objects"
 
-    print("### Serializando Mensagem")
+    print("### Serializing Message")
     serialized_message = command_message.SerializeToString()
 
     write(client_socket, serialized_message)
-    print("### Mensagem enviada")
+    print("### Message sended!")
 
     return None
 
@@ -48,11 +48,11 @@ def request_status_object(client_socket, consulted_object):
     command_message.command = "get_status"
     command_message.args = consulted_object
 
-    print("### Serializando Mensagem")
+    print("### Serializing Message")
     serialized_message = command_message.SerializeToString()
 
     write(client_socket, serialized_message)
-    print("### Mensagem enviada")
+    print("### Message sended!!")
 
     return None
 
@@ -62,11 +62,11 @@ def set_status_object(client_socket, args):
     command_message.command = "set_status"
     command_message.args = args
 
-    print("### Serializando Mensagem")
+    print("### Serializing Message")
     serialized_message = command_message.SerializeToString()
 
     write(client_socket, serialized_message)
-    print("### Mensagem enviada")
+    print("### Message sended")
 
     return None
 
@@ -76,18 +76,18 @@ def set_attribute_object(client_socket, args):
     command_message.command = "set_attributes"
     command_message.args = args
 
-    print("### Serializando Mensagem")
+    print("### Serializing Message")
     serialized_message = command_message.SerializeToString()
 
     write(client_socket, serialized_message)
-    print("### Mensagem enviada")
+    print("### Message sended")
 
     return None
 
 def main(client_socket):
     while True: 
         time.sleep(1)
-        command = input('\nDigite o comando:')
+        command = input('\nWrite a command:')
         command_split = command.split()
         try:
             if command_split[0] == 'request_list':
@@ -99,21 +99,21 @@ def main(client_socket):
             elif command_split[0] == 'set_attribute':
                 set_attribute_object(client_socket,f"{command_split[1]} {command_split[2]} {command_split[3]}")
             else:
-                print('Comando invalido')
+                print('Invalid Command!')
         except:
-            print('Comando invalido')
+            print('Invalid Command!')
             
 
 # conecta via tcp com o servidor
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.bind(ADDR_APP)
 client_socket.connect(GATEWAY_ADDR)
-print("### conectado com o servidor")
+print("### Connected with Gateway")
 
 # início da thread para fica escutando o server
 receive_thread = threading.Thread(target=receive, args=(client_socket,  ))
 receive_thread.start()
-print("### Escutando respostas do servidor")
+print("### Listening gateway's answer")
 
 main(client_socket)
 

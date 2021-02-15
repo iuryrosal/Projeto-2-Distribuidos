@@ -11,8 +11,8 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(ADDR)
 server_socket.listen()
 
-print("Servidor ligado!")
-print("IP DO SERVIDOR: ", ADDR)
+print("Server On!")
+print("IP's Server: ", ADDR)
 
 clients = []
 nicknames = []
@@ -31,12 +31,13 @@ def all_users(client):
     client.send('{}'.format(nicknames).encode(FORMAT))
 
 def disconnect(client):
-    client.send('Desconectando...'.encode(FORMAT))
+    client.send('Disconnecting...'.encode(FORMAT))
     index = clients.index(client)
     clients.remove(client)
-    client.send('Desconectado com sucesso!'.encode(FORMAT))
+    client.send('Disconnected!'.encode(FORMAT))
     client.close()
     nickname = nicknames[index]
+    print('{} left!'.format(nickname))
     broadcast('{} left!'.format(nickname).encode(FORMAT))
     nicknames.remove(nickname)
 
@@ -61,14 +62,14 @@ def receive():
         client, address = server_socket.accept()
         print("Connected with {}".format(str(address)))
 
-        client.send('NICK'.encode('ascii'))
-        nickname = client.recv(1024).decode('ascii')
+        client.send('NICK'.encode(FORMAT))
+        nickname = client.recv(1024).decode(FORMAT)
         nicknames.append(nickname)
         clients.append(client)
 
         print("Nickname is {}".format(nickname))
-        broadcast("{} joined!".format(nickname).encode('ascii'))
-        client.send('Connected to server!'.encode('ascii'))
+        broadcast("{} joined!".format(nickname).encode(FORMAT))
+        client.send('Connected to server!'.encode(FORMAT))
 
         thread = threading.Thread(target=handle, args=(client,))
         thread.start()
