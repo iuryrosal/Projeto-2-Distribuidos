@@ -11,7 +11,7 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server_socket.bind(ADDR)
 
 print('The server is connected')
-print('Traget IP: ', server_name)
+print('Target IP: ', server_name)
 print('Target Port:', server_port)
 print('\n')
 
@@ -35,14 +35,14 @@ while 1:
     if result != None:
         answer = str(result).encode(FORMAT) 
     else:
-        msg = "Operação Inválida"
+        msg = "Invalid Operation"
         answer = msg.encode(FORMAT) 
         
     server_socket.sendto(answer, clientAddress)
 
     again, clientAddress = server_socket.recvfrom(2048)
     again_decoded = int(again.decode(FORMAT))
-    print('Again? ', again_decoded)
+    print('Again?', again_decoded)
 
     if again_decoded == 0:
         break
