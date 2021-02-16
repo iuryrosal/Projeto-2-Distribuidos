@@ -16,6 +16,8 @@ Já o Gateway realiza a descoberta de objetos inteligentes via multicast. Ocorre
 A aplicação pode solicitar status desses objetos e solicitar modificação desses status. Além disso, um dos objetos do projeto deve enviar periodicamente uma atualização ao Gateway do seu status e algum atributo.
 Resumindo, é uma simulação de projeto envolvendo IoT. 
 
+Devido a complexidade desse projeto, iremos apenas dar uma visão geral do projeto. Recomenda-se visualizar o projeto Chat_TCP antes de visualizar esse projeto.
+
 ## Objetos Usados
 - Lâmpada (LAMP.PY)
   Status: ligado / desligado
@@ -69,3 +71,6 @@ Ao ligar a aplicação, esta já realiza a conexão com o gateway via TCP.
 Após a conexão, inicia-se a thread receive() em que a aplicação poderá receber mensagens do gateway de forma independente.
 
 Diferente do que foi feito no Chat_TCP, abrimos threads apenas para recebimento de mensagens nos clientes. Pois a função de escrita será executada apenas quando necessário. Ou seja, quando a aplicação solicitar algo.
+
+## Protocol Buffers
+No arquivo de formato .proto contem o formato das mensagens que serão trocadas entre Aplicação e Gateway. ApplicationMessage se refere a mensagens enviadas pela Aplicação ao Gateway. E GatewayMessage se refere a mensagens enviadas pelo Gateway à Aplicação.
