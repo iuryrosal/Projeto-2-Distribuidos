@@ -20,15 +20,15 @@ Devido a complexidade desse projeto, iremos apenas dar uma visão geral do proje
 
 ## Objetos Usados
 - Lâmpada (LAMP.PY)
-  Status: ligado / desligado
-  ENVIO DO STATUS QUANDO SOLICITADO
+  - Status: ligado / desligado
+  - ENVIO DO STATUS QUANDO SOLICITADO
 - BORRIFADOR (SPRINKLER.PY)
-  STATUS: LIGADO / DESLIGADO
-  ENVIO DO STATUS QUANDO SOLICITADO
+  - STATUS: LIGADO / DESLIGADO
+  - ENVIO DO STATUS QUANDO SOLICITADO
 - AR CONDICIONADO (AC.PY)
-  STATUS: LIGADO / DESLIGADO
-  TEMPERATURA
-  ENVIO periodico DE SUA TEMPERATURA E STATUS
+  - STATUS: LIGADO / DESLIGADO
+  - TEMPERATURA
+  - ENVIO periodico DE SUA TEMPERATURA E STATUS
 
 Essas funções que representam os objetos se encontram dentro da pasta objects.
 
