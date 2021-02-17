@@ -11,6 +11,17 @@
   - Struct;
   - Protocol Buffers.
 
+## Escopo
+- Uma aplicação (móvel, desktop ou web) deve ser implementada para permitir ao usuário conectar e visualizar o status dos objetos do ambiente inteligente, além de atuar e ler os dados dados dos objetos.
+- A aplicação deve se conectar a um servidor, chamado de Gateway, que se comunica com cada um dos objetos "inteligentes" do local. A comunicação entre aplicação e o Gateway deve ser implementada utilizando TCP e as mensagens definidas com Protocol Buffers.
+- Deve haver, pelo menos, dois tipos de mensagens (Request e Response) cujos formatos devem ser definidos pelo grupo.
+- O ambiente inteligente deve conter, no mínimo, 3 equipamentos (lâmpadas, tv, ar condicionado, etc...).
+- A comunicação do Gateway com os equipamentos fica a critério do time. Tais equipamentos podem ser todos simulados por software, que envia de forma periodica seu estatus (ou quando ele se modifica) e recebe comandos para ligar/desligar ou realizar alguma operação.
+- O Gateway deve ter uma funcionalidade de descobertas de equipamentos inteligentes, usando comunicação em grupo. Ao iniciar o Gateway, ele deve enviar uma mensagem solicitando que os equipamentos se identifiquem.
+- Ao iniciar o processo dos equipamentos inteligentes, estes devem enviar mensagem se identificando para o Gateway. A identificação significa enviar seu tipo (lâmpada, ar condicionado, etc..), Ip e Porta para o Gateway.
+- Pelo menos um dos equipamentos deve atuar como um sensor contínuo, que envia a cada ciclo de X segundos um valor para o Gateway (um sensor de temperatura).
+- Pelo menos um dos equipamentos deve ter comportamento de um atuador (recebe comandos para atualizar seu status, como ligar/desligar).
+
 A intenção do projeto é ter uma aplicação (que simulamos no terminal), esta se conecta ao gateway. Essa conexão ocorre via TCP usando Protocol Buffers. 
 Já o Gateway realiza a descoberta de objetos inteligentes via multicast. Ocorre, posteriormente, a conexão do Gateway com esses objetos.
 A aplicação pode solicitar status desses objetos e solicitar modificação desses status. Além disso, um dos objetos do projeto deve enviar periodicamente uma atualização ao Gateway do seu status e algum atributo.
