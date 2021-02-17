@@ -12,6 +12,7 @@ Projetos:
   - Uma vez conectado, o cliente pode enviar mensagens para a sala do chat;
   - /USUARIOS: ao enviar esse comando, o cliente recebe a lista de usuários atualmente conectados ao chat; 
   - /SAIR: ao enviar esse comando, uma mensagem é enviada à sala do chat informando que o usuário está saindo e encerra a participação no chat.
+  - É papel do servidor receber as requisições dos clientes e encaminhar as mensagens recebidas para todos eles. Não pode usar comunicação em grupo.
 
 - Ambiente Inteligente:
   - Uma aplicação (móvel, desktop ou web) deve ser implementada para permitir ao usuário conectar e visualizar o status dos objetos do ambiente inteligente, além de atuar e ler os dados dados dos objetos.
