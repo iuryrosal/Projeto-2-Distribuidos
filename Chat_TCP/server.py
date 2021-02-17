@@ -23,7 +23,7 @@ def broadcast(message):
 
 def commands(client, message):
     if message == '/USUARIOS':
-        all_users(client)
+        all_users(client)   
     else:
         client.send("Invalid message! Please try again...".encode(FORMAT))
 
