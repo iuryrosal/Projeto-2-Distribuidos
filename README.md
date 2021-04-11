@@ -1,8 +1,7 @@
 ﻿# Sistemas Distribuidos
  Aqui estão reunidos os projetos realizados dentro da disciplina de Sistemas Distribuídos do curso de Engenharia de Computação (Universidade Federal do Ceará - UFC). Os projetos foram feitos via linguagem Python. Esses projetos foram realizados pelo time composto por:
- - Iury Lima Rosal
- - Luís Gustavo de Castro
- - Vinicius Almeida de Castro
+ 
+ ![image](https://user-images.githubusercontent.com/36707351/114313238-1e763000-9acc-11eb-96b4-73119651a7f6.png)
  
 Projetos:
 - Calculadora_UDP: consiste em, utilizando UDP, implementar uma calculadora remota que execute as 4 operações básicas (+, -, x, /) de números decimais. Descreva o formato para cada tipo das mensagens (Request e Response).
