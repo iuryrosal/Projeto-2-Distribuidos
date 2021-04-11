@@ -1,3 +1,16 @@
+# Ambiente Inteligence com RabbitMQ e GRPC
+
+## Escopo
+  - Simular  um  ambiente  inteligente  (por  exemplo,  casa,  escritório,  sala  de aula,  clínica  médica,  carro,  etc). No ambiente, existiram atuadores e sensores. Um mesmo objeto, como um ar condicionado, possui o atuador que permite alterar a sua variável (temperatura) que afetará a temperatura ambiente e possui um sensor inbutido que checa o valor da temperatura ambiente. 
+  - Os objetos (atuadores + sensores) são gerenciados por um equipamento servidor chamado de Home Assistant. Este  equipamento  deverá  interagir  com  os sensores  e  os atuadores  coletando informações e,  eventualmente,  agindo sobre  o  ambiente. 
+  - A  comunicação  entre  os  sensores  e  o  Home  Assintent  deverá  ocorrer  via  RabbitMQ,  usando  o paradigma  Publisher/Subscriber,  onde  o  Home  Assistent  se  comportará  como  Subscriber  e cada  sensor  como  Publisher.  Cada  sensor  deverá  publicar  periodicamente  os  dados  por  ele observados  em  uma  fila  própria  no  RabbitMQ,  que  se  encarregará  de  notificar  o  Home Assintent  sobre  a  nova  mensagem.
+  - A  comunicação  entre  os  atuadores  e  o  Home  Assistent,  por  sua  vez,  deverá  ocorrer  via  gRPC, usando  o  paradigma  Client/Server,  onde  o  Home  Assistent  se  comportará  como  Client  e  cadaatuador  como  Server. Dessa  forma,  o Home  Assistent  poderá  atuar  no  ambiente  através  da  invocação  remota  dos métodos que modificaram os atuadores.
+  - O  HomeAssistent  também  deverá  se  comportar  como  um  servidor  para  uma  aplicação  cliente que  permita  ao  usuário  interagir  com  o  ambiente.  Através  dessa  aplicação  (que  poderá  ser Desktop,  Web  ou  Mobile),  o  usuário  poderá  receber  as  informações  de  momento  do  ambiente (por  exemplo,  o  nível  de  luminosidade  detectado  por  cada  sensor)  e  também  poderá  agir sobre  ele  (por  exemplo,  ligando  ou  desligando  uma  lâmpada).
+ 
+ A imagem abaixo resume o escopo desse projeto:
+![image](https://user-images.githubusercontent.com/36707351/114312881-a2c7b380-9aca-11eb-9218-f71b50ee758a.png)
+
+## Implementação e Execução
 
 As imagens abaixo contém detalhes a respeito das ferramentas utilizadas e das estruturas usadas para funcionamento do projeto:
 
